@@ -4,8 +4,9 @@ import {FaArrowRight} from "react-icons/fa";
 
 function BookList() {
     console.log(bookables)
-    const group = "Rooms"
+    const [group, setGroup] = useState("Rooms")
     const bookableGroup = bookables.filter(b => (b.group === group))
+    const groups = ["Rooms", "Kit"]
 
     // 상태값 관리를 해야할 변수 bookableIndex
     // setBookableIndex : useState 가 리턴해주는 메소드(값 변경 메소드)
@@ -17,7 +18,10 @@ function BookList() {
     }
 
     return (
-        <>
+        <div>
+            <select value={group} onChange={(e) => setGroup(e.target.value)}>
+                {groups.map(g => <option value={g}>{g}</option>)}
+            </select>
             <ul className="items-list-nav">
                 {bookableGroup.map((b,i) => (
                     <li key={b.id} className={i === bookableIndex ? "selected":null}>
@@ -32,7 +36,7 @@ function BookList() {
                     <FaArrowRight/><span>Next</span>
                 </button>
             </p>
-        </>
+        </div>
     )
 }
 
