@@ -1,19 +1,40 @@
-// 초기 App.jsx
 import './App.css'
-import Garage, {Car} from "./basic/List.jsx";
-import GarageKorean from "./basic/Objects.jsx";
+import {BrowserRouter, Link} from "react-router-dom";
+import {FaCalendarAlt, FaDoorOpen, FaUsers} from "react-icons/fa";
+import UserPicker from "./component/Users/UserPicker.jsx";
 
-// index.html 처음 요청으로 반환되는 페이지(유일한 html 파일-SPA=Single Page Application)
-// index.html -> main.jsx(index.js)
 function App() {
 
   return (
-    <>
-        {/* 임의의 brand 프로퍼티 설정 */}
-       <Car brand="소나타"/>
-        <Garage/>
-        <GarageKorean/>
-    </>
+    <BrowserRouter>
+      <div className="App">
+        <header>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/bookings" className="btn btn-header">
+                  <FaCalendarAlt/>
+                  <span>Bookings</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/bookables" className="btn btn-header">
+                  <FaDoorOpen/>
+                  <span>Bookables</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/users" className="btn btn-header">
+                  <FaUsers/>
+                  <span>Users</span>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          <UserPicker/>
+        </header>
+      </div>
+    </BrowserRouter>
   )
 }
 
