@@ -11,6 +11,14 @@ function BookList() {
         hasDetails: false
     }
 
+    // state : 상태값들을 모아놓은 오브젝트
+    // dispatch 현재 상태값 -> 새로운 상태값을 만든다, 이벤트 핸들러에서 실행
+    // state, dispatch : useReducer 함수의 리턴 값
+    // useReducer 생성하는 인자
+    // 1. reducer : dispatch 에서 전달한 액션(type, payload)으로 실행할 내용을 정의
+    //    - useState 에서는 이벤트에서 처리하던 동작을 모아서 현재값을 어떤 수식으로 실행할지 정의
+    // 2. initState : 상태값(오브젝트)의 초기 상태
+    // 3. 생략된 상태 : initState 초기값을 받아 처음한번 실행하는 초기화 함수
     const [state, dispatch] = useReducer(reducer, initState);
     const {group, bookableIndex, hasDetails} = state
 

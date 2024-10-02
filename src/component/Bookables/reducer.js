@@ -1,4 +1,4 @@
-// state : 상태값 오브젝트
+// state : 상태값 오브젝트(현재 상태값)
 // action : 오브젝트는 무엇을 어떻게 변경할 것인가
 // 리턴 : 새로운 상태값
 export default function reducer(state, action){
