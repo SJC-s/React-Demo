@@ -18,15 +18,15 @@ function addDays(forDate, offset) {
     date.setDate(date.getDate() + offset);
     return date;
 }
-
-let result = getWeek(new Date());
-console.log(result);
-
-result = getWeek(new Date(), 7);
-console.log(result);
-
-result = getWeek(new Date(), -7);
-console.log(result);
-
-result = getWeek(new Date('2024-11-06'));
-console.log(result);
+// 테스트
+// let result = getWeek(new Date());
+// console.log(result);
+//
+// result = getWeek(new Date(), 7);
+// console.log(result);
+//
+// result = getWeek(new Date(), -7);
+// console.log(result);
+//
+// result = getWeek(new Date('2024-11-06'));
+// console.log(result);
