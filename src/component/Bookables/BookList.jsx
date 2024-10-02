@@ -1,32 +1,51 @@
 import {bookables, days, sessions} from "../../static.json"
-import {useState} from "react";
+import {useReducer} from "react";
 import {FaArrowRight} from "react-icons/fa";
+import reducer from "./reducer.js";
 
 function BookList() {
-    console.log(bookables)
-    const [group, setGroup] = useState("Rooms")
-    const bookableGroup = bookables.filter(b => (b.group === group))
+    // 상태를 관리할 변수들 초기값 객체
+    const initState = {
+        group: "Rooms",
+        bookableIndex: 0,
+        hasDetails: false
+    }
 
-    // b.group 가져와서 컬렉션, 중복값은 1개만 저장하기 위해 Set 자료구조
-    // ... : Set 오브젝트를 배열로 변환
+    const [state, dispatch] = useReducer(reducer, initState);
+    const {group, bookableIndex, hasDetails} = state
+
+    const bookableGroup = bookables.filter(b => (b.group === group))
     const groups = [...new Set(bookables.map(b=>b.group))]
 
-    // 상태값 관리를 해야할 변수 bookableIndex
-    // setBookableIndex : useState 가 리턴해주는 메소드(값 변경 메소드)
-    const [bookableIndex, setBookableIndex] = useState(0)
 
     function nextBookableIndex(){
-        setBookableIndex((i) => (i+1) % bookableGroup.length)
-        // 상태값 변경 메소드의 인자 i : bookableIndex 값
+        dispatch({
+            type: "NEXT_BOOKABLE",
+            payload: bookableGroup.length
+        })
     }
 
     function changeGroup(event) {
-        setGroup(event.target.value)
-        setBookableIndex(0)
+        dispatch({
+            type: "SET_GROUP",
+            payload: event.target.value
+        })
+    }
+
+    function changeBookableIndex(selectIndex){
+        dispatch({
+            type: "SET_BOOKABLE",
+            payload: selectIndex
+        })
+    }
+
+    function toggleDetails() {
+        dispatch({
+            type: "TOGGLE_HAS_DETAILS"
+        })
     }
 
     const bookable = bookableGroup[bookableIndex];
-    const [hasDetails, setHasDetails] = useState(false);
 
     return (
         <>
@@ -38,7 +57,7 @@ function BookList() {
                 <ul className="items-list-nav">
                     {bookableGroup.map((b,i) => (
                         <li key={b.id} className={i === bookableIndex ? "selected":null}>
-                            <button className="btn" onClick={() => setBookableIndex(i)}>
+                            <button className="btn" onClick={() => changeBookableIndex(i)}>
                                 {b.title}
                             </button>
                         </li>
@@ -58,7 +77,7 @@ function BookList() {
                         <h2>{bookable.title}</h2>
                         <span className="controls">
                             <label>
-                                <input type="checkbox" checked={hasDetails} onChange={() => setHasDetails(has=>!has)}/>
+                                <input type="checkbox" checked={hasDetails} onChange={toggleDetails}/>
                             </label>
                         </span>
                     </div>
