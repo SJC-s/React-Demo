@@ -24,9 +24,8 @@ export function getGrid(bookable, startDate) {
             title:""
         })
     })
-
     // 키이름과 변수명이 같으면 생략해서 하나만 써도 된다
-    return { grid, dates, sessions:sessionNames }
+    return { grid, dates, sessions:sessions }
 }
 
 
@@ -40,29 +39,29 @@ export function getGrid(bookable, startDate) {
 //     "Evening"
 // ]
 
-const bookable =
-{
-    id: 3,
-        group: "Rooms",
-    title: "Games Room",
-    notes: "Table tennis, table football, pinball! There's also a selection of board games. Please tidy up!",
-    sessions: [
-    0,
-    2,
-    4
-],
-    days: [
-    0,
-    2,
-    3,
-    4,
-    5,
-    6
-]
-}
-
-const result = getGrid(bookable, new Date("2024-09-29"))
-console.log('-->', result) // grid 객체
-
-// 자바스크립트 프로퍼티 get/set : 객체.프로퍼티이름 또는 객체[프로퍼티이름]
-console.log(result.grid["Breakfast"]["2024-10-01"])
+// const bookable =
+// {
+//     id: 3,
+//         group: "Rooms",
+//     title: "Games Room",
+//     notes: "Table tennis, table football, pinball! There's also a selection of board games. Please tidy up!",
+//     sessions: [
+//     0,
+//     2,
+//     4
+// ],
+//     days: [
+//     0,
+//     2,
+//     3,
+//     4,
+//     5,
+//     6
+// ]
+// }
+//
+// const result = getGrid(bookable, new Date("2024-09-29"))
+// console.log('-->', result) // grid 객체
+//
+// // 자바스크립트 프로퍼티 get/set : 객체.프로퍼티이름 또는 객체[프로퍼티이름]
+// console.log(result.grid["Breakfast"]["2024-10-01"])
