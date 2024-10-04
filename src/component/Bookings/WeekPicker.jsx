@@ -1,11 +1,10 @@
 import {useReducer} from "react";
 import reducer from "./weekReducer.js";
-import getWeek from "./date-util.js";
+import getWeek from "../utils/date-utils.js";
 import {FaCalendarDay, FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import {formatDate} from "../utils/date-utils.js";
 
-function WeekPicker({date}) {
-    // date 값으로 getWeek 함수를 통해 state(week) 초기화
-    const [week, dispatch] = useReducer(reducer, date, getWeek);
+function WeekPicker({week, dispatch}) {
 
     function changeDate(event) {
         dispatch({
@@ -38,13 +37,6 @@ function WeekPicker({date}) {
             </p>
         </div>
     )
-}
-
-function formatDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return year + '-' + month + '-' + day;
 }
 
 export default WeekPicker;

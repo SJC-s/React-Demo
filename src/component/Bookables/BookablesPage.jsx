@@ -1,14 +1,14 @@
-import BookList from "./BookList.jsx";
+import BookablesView from "./BookablesView.jsx";
 
-function BookablePage(){
+function BookablesPage(){
     return (
         <>
             <h4>예약 가능 현황</h4>
             <main className="bookables-page">
-                <BookList/>
+                <BookablesView/>
             </main>
         </>
     )
 }
 
-export default BookablePage;
+export default BookablesPage;
