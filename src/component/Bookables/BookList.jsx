@@ -1,7 +1,9 @@
-import {bookables, days, sessions} from "../../static.json"
-import {useReducer} from "react";
+import {days,sessions} from "../../static.json"
+import {useEffect, useReducer,useState} from "react";
 import {FaArrowRight} from "react-icons/fa";
 import reducer from "./reducer.js";
+import PageSpinner from "src/component/Users/PageSpinner.jsx";
+
 
 function BookList() {
     // 상태를 관리할 변수들 초기값 객체
@@ -21,6 +23,33 @@ function BookList() {
     // 3. 생략된 상태 : initState 초기값을 받아 처음한번 실행하는 초기화 함수
     const [state, dispatch] = useReducer(reducer, initState);
     const {group, bookableIndex, hasDetails} = state
+
+    const [bookables, setBookables] = useState(null)
+    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        setLoading(true)
+        fetch("http://localhost:3002/bookables")
+            .then(response => {
+                return response.json()
+            })
+            .then(
+                data => {
+                    setBookables(data)
+                    setLoading(false)
+                }
+            )
+            .catch((error) => setError(error.message))
+    }, []);
+
+    if(error){
+        return <div>오류 : {error}</div>
+    }
+
+    if(loading){
+        return <span><PageSpinner/>Loading....</span>
+    }
 
     const bookableGroup = bookables.filter(b => (b.group === group))
     const groups = [...new Set(bookables.map(b=>b.group))]
