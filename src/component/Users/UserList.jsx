@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import PageSpinner from "./PageSpinner.jsx";
+import PageSpinner from "../UI/PageSpinner.jsx";
 
 function UserList() {
     const [users, setUsers] = useState(null);
