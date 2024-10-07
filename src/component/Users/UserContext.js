@@ -1,7 +1,7 @@
-import {createRoot} from "react-dom/client";
+import {createContext} from "react";
 
 // 컨텍스트 생성하기
-const UserContext = createRoot();
+const UserContext = createContext();
 export default UserContext;
 
 /*
