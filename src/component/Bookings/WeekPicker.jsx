@@ -1,16 +1,20 @@
 import {useReducer} from "react";
 import reducer from "./weekReducer.js";
 import getWeek from "../utils/date-utils.js";
-import {FaCalendarDay, FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import {FaCalendarDay, FaChevronLeft, FaChevronRight, FaCalendarCheck} from "react-icons/fa";
 import {formatDate} from "../utils/date-utils.js";
+import {useRef} from "react";
 
 function WeekPicker({week, dispatch}) {
 
-    function changeDate(event) {
+    //* go 버튼 추가 : useRef 새로이 사용한 훅
+    const textboxRef = useRef();
+
+    function goToDate () {
         dispatch({
             type: "SET_DATE",
-            payload: event.target.value
-        })
+            payload: textboxRef.current.value
+        });
     }
 
     return (
@@ -20,9 +24,12 @@ function WeekPicker({week, dispatch}) {
                     <FaChevronLeft/>
                     <span>PREV</span>
                 </button>
-                <input type="date" defaultValue={formatDate(new Date())} onChange={changeDate}/>
                 {/* 입력값을 state(상태값) 관리시 : 이 예제에서는 날짜 타입으로 변환되는 문자열이 아니면 예상치 않은 결과로 보인다 */}
-                <input type="text" defaultValue={formatDate(new Date())} placeholder="yyyy-MM-dd" onChange={changeDate}/>
+                <input type="text" ref={textboxRef} defaultValue={formatDate(new Date())} placeholder="yyyy-MM-dd"/>
+                <button className="go btn" onClick={goToDate}>
+                    <FaCalendarCheck/>
+                    <span>Go</span>
+                </button>
                 <button className="btn" onClick={() => dispatch({type: "TODAY"})}>
                     <FaCalendarDay/>
                     <span>Today</span>
