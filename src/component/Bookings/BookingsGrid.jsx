@@ -1,35 +1,73 @@
-import {useState} from "react";
+import {useState, useEffect, useMemo} from "react";
 import {formatDateDay} from "../utils/date-utils.js";
-import {getGrid} from "./grid-builder.js";
+import {getGrid, transformBookings} from "./grid-builder.js";
 import Spinner from "../UI/Spinner.jsx";
 
 // bookings api 에서 받아옴
-export default function BookingsGrid ({week, bookable, bookings, setBookings}) {
-    // const bookings = [
-    //     {
-    //         "session": "Lunch",
-    //         "date": "2024-09-23",
-    //         "bookableId": 3,
-    //         "title": "Football Challenge",
-    //         "bookerId": 3,
-    //         "id": 2
-    //     },
-    //     {
-    //         "session": "Breakfast",
-    //         "date": "2024-09-26",
-    //         "bookableId": 3,
-    //         "title": "Tiddlywinks",
-    //         "bookerId": 2,
-    //         "id": 5
-    //     }
-    // ]
+export default function BookingsGrid ({week, bookable, booking, setBooking}) {
+    const [bookings, setBookings] = useState(null)
+    /*
+    bookable.id는 3, week.start는 2024-09-22, week.end는 2024-09-28 3개의 값을 조건으로
+    예약 현황을 조회하여 수신된 bookins 배열이 아래와 같다면,
+    */
+
+    useEffect(() => {
+        //아직 fecth 통신을 하지는 않지만 useEffect에 넣지 않으면 다른 state 변수값의
+        //변화로 재렌더링이 일어날때마다 실행되어 재렌더링 횟수 초과로 오류가 발생한다.
+        const bookingsExam = [
+            {
+                "session": "Lunch",
+                "date": "2024-09-23",
+                "bookableId": 3,
+                "title": "Football Challenge",
+                "bookerId": 3,
+                "id": 2
+            },
+            {
+                "session": "Breakfast",
+                "date": "2024-09-26",
+                "bookableId": 3,
+                "title": "Tiddlywinks",
+                "bookerId": 2,
+                "id": 5
+            }
+        ]
+        /* 조건에 따라 조회된 bookingsExam 결과(test-of-transformBookings.js 참고)를 Grid 에 출력하기
+     위한 객체로 변환 */
+        setBookings(transformBookings(bookingsExam))
+    }, []);
+
     const {grid, sessions, dates} = bookable?getGrid(bookable, week.start):{}
+
+    function cell (session, date) {
+        const cellData = bookings?.[session]?.[date]   /* 결과가 false 이면*/
+            || grid[session][date];        /* or 연산 뒤의 수식을 수행하는 단축평가연산*/
+
+        //순서2) booking 의 session과 date 속성값이 현재 셀 위치의 session, date 와 같으면
+        // isSelected 를 참으로 하여 css 를 적용하기
+        const isSelected = booking?.session === session
+            && booking?.date === date;
+
+        return (
+            <td
+                key={date}
+                className={isSelected ? "selected" : null}
+                onClick={bookings ? () => setBooking(cellData) : null}
+            >  {/*순서1) 그리드의 각 셀을 클릭했을 때 해당 cellData 정보가 booking 에 저장*/}
+                {cellData.title}
+            </td>
+        );
+    }
 
     return (
         <table className={bookings? "bookingsGrid active":"bookingsGrid"}>
             <thead>
                 <tr>
-                    <th><span className="status"><Spinner/></span></th>
+                    <th>
+                        <span className="status">
+                            {!(dates && sessions && grid) && <Spinner/>}
+                        </span>
+                    </th>
                     {dates && dates.map(d => (
                         <th key={d}>{formatDateDay(new Date(d))}</th>
                     ))}
@@ -39,7 +77,8 @@ export default function BookingsGrid ({week, bookable, bookings, setBookings}) {
                 {sessions && sessions.map(session => (
                     <tr key={session}>
                         <th>{session}</th>
-                        {dates.map(date => "")}
+                        {dates.map(date => cell(session, date))}
+                        {/* 위의 cell 함수 실행으로 반환된 td 요소 출력*/}
                     </tr>
                 ))}
             </tbody>
