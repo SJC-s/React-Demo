@@ -6,12 +6,9 @@ function UserList({user, setUser}) {
     // fetch 중 오류 발생시 또는 로딩 중의 상태값
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [userIndex, setUserIndex] = useState(0);
-    // user = users?.[userIndex]; // 자바의 Optional 역할 연산자 : ?.(null 아닐 때만 실행)    // 순서5) users 0번을 user에 저장
-    // users 가 null 이 아닐 때만 실행
-
-    // 선택된 인덱스값으로 user 를 바꿔야 함(부모, 형제 컴포넌트와 공유할 수 있는 방법으로 바꿈)
-    setUser(users?.[userIndex])
+    // index 를 사용하면 이벤트 핸들러가 아닌 곳에서 상태 변경 함수를 실행
+    // 그래서 index 를 사용하지 않도록 리팩토링
+    // setUser(users?.[userIndex])
 
     // API 서비스 제공하는 서버로부터 데이터 가져오기
     useEffect(() => {
@@ -39,9 +36,9 @@ function UserList({user, setUser}) {
     return (
         <>
             {users && (<ul className="users items-list-nav">
-                {users.map((u,i) => (
-                    <li key={u.id} className={i === userIndex ? "selected":null}>
-                        <button className="btn" onClick={() => setUserIndex(i)}>
+                {users.map(u => (
+                    <li key={u.id} className={u.id === user?.id ? "selected":null}>
+                        <button className="btn" onClick={() => setUser(u)}>
                             {u.name}
                         </button>
                     </li>
