@@ -1,23 +1,23 @@
 import {useContext, useEffect, useState} from "react";
 import Spinner from "../UI/Spinner.jsx";
 import UserContext from "./UserContext.js";
+import useFetch from "../utils/useFetch.js";
 
 export default function UserPicker(){
-    const [users, setUsers] = useState(null)    //users 는 배열
     // const [user, setUser] = useState(null)
     // UserContext 를 통해 관리로 변경
     // user 상태값을 가져오기 위해 useContext hook 사용 해야함
     const {user, setUser} = useContext(UserContext)
+//  "http://localhost:3002/users",  setUser(data[0])
+    const {data:users=[], status, error} = useFetch("http://localhost:3002/users")
+
     useEffect(() => {
-        fetch("http://localhost:3002/users")
-            .then(resp=> resp.json())
-            .then(
-                data => {
-                    setUsers(data)
-                    setUser(data[0])
-                }
-            )
-    }, [setUser]);
+        setUser(users[0])
+    }, [users, setUser]);
+
+    if(status === "loading") {
+        return <Spinner/>
+    }
 
     function handleSelect(e){
         // 문자열
