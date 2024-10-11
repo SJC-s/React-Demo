@@ -1,5 +1,7 @@
 import {useState} from "react";
 import {days, sessions} from "../../static.json";
+import {Link} from "react-router-dom";
+import {FaEdit} from "react-icons/fa";
 
 // (bookables : 전체 목록,) bookable : 목록 중에 선택한 객체를 컴포넌트 프롭으로 받음
 //자식 컴포넌트에서 부모컴포넌트가 전달한 state 변수를 props 로 받음.
@@ -20,6 +22,10 @@ export default function BookableDetails ({bookable}) {
             <input type="checkbox" onChange={toggleDetails} checked={hasDetails} />
             Show Details
           </label>
+                    {/* 글 수정 화면 전환 링크 */}
+            <Link to={`/bookables/${bookable.id}/edit`} className="btn btn-header">
+                <FaEdit/><span>Edit</span>
+            </Link>
         </span>
             </div>
 
@@ -30,15 +36,15 @@ export default function BookableDetails ({bookable}) {
                     <h3>Availability</h3>
                     <div className="bookable-availability">
                         <ul>
-                            {bookable.days
+                            {bookable.days && (bookable.days
                                 .sort()
                                 .map(d => <li key={d}>{days[d]}</li>)
-                            }
+                            )}
                         </ul>
                         <ul>
-                            {bookable.sessions
+                            {bookable.sessions && (bookable.sessions
                                 .map(s => <li key={s}>{sessions[s]}</li>)
-                            }
+                            )}
                         </ul>
                     </div>
                 </div>
