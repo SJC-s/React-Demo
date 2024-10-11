@@ -35,8 +35,17 @@ export default function BookableEdit() {
         return <PageSpinner/>
     }
 
+    function handleSubmit() {
+
+    }
+
+    function handleDelete() {
+
+    }
+
     // state : 화면에 보여질 값들을 저장
     return (
-        status ==="success" && <BookableForm formState={{state, setState}}/>
+        status ==="success" &&
+        <BookableForm formState={{state, setState, handleSubmit, handleDelete}}/>
     )
 }

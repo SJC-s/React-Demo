@@ -1,8 +1,12 @@
 import {days as daysArray, sessions as sessionsArray} from "../../static.json"
+import {FaCloudUploadAlt, FaTrash, FaWindowClose} from "react-icons/fa";
+import {Link} from "react-router-dom";
 
+// BookableNew 에서는 handleSubmit(post) 함수만 전달
+// BookableEdit 에서는 handleDelete, handleSubmit(patch 또는 put 수정) 함수 2개 모두 전달
 export default function BookableForm({formState={}}) {
     // state 가 undefined 일 때를 위한 초기값 필요
-    const {state={},setState} = formState;
+    const {state={},setState, handleDelete, handleSubmit} = formState;
     const {title="", group="", notes=""} = state;
     const {days=[], sessions=[]} = state
 
@@ -46,7 +50,7 @@ export default function BookableForm({formState={}}) {
         <main className="bookables-form">
             <div className="item item-form">
                 <div className="item-header">
-                    <h2>{/*{handleDelete ? "Edit" : "New"}*/} Bookable</h2>
+                    <h2>{handleDelete ? "Edit" : "New"} Bookable</h2>
                 </div>
 
 
@@ -106,6 +110,22 @@ export default function BookableForm({formState={}}) {
                     </ul>
                 </div>
             </div>
+
+            <p className="controls">
+                {handleDelete && (
+                    <button className="btn btn-delete controls-alt" onClick={handleDelete}>
+                        <FaTrash/><span>삭제</span>
+                    </button>
+                )}
+                <Link className="btn" to={state.id ? `/bookables/${state.id}` : `/bookables`}>
+                    <FaWindowClose/><span>닫기</span>
+                </Link>
+                <button className="btn" onClick={handleSubmit}>
+                    <FaCloudUploadAlt/><span>저장</span>
+                </button>
+            </p>
         </main>
     )
 }
+// handleDelete, handleSubmit 함수 : 이벤트 핸들러 -> 서버의 상태를 바꾸는 fetch
+// BookableForm : 새로운 예약 자원 등록에도 사용할 예정(등록과 편집)
