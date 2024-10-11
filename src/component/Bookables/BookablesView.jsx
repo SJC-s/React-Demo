@@ -27,7 +27,7 @@ export default function BookablesView () {
     // url 경로에서 가져온 id 값과 bookables 의 id가 같은 것을 bookable 에 저장
     const bookable = bookables.find(b => b.id === parseInt(id,10)) || bookables[0];
     if (status === "error") {
-        return <p>{error.message}</p>
+        return <p>{error}</p>
     }
     if (status === "loading") {
         return <PageSpinner/>
