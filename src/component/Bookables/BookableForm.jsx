@@ -6,15 +6,39 @@ export default function BookableForm({formState={}}) {
     const {title="", group="", notes=""} = state;
     const {days=[], sessions=[]} = state
 
-    function handleChange(){
-        // setState 로 값을 변경
-
+    // input 요소의 value : 상태값 state 변수 <- BookableEdit 에서 useState 로 만들어진 변수
+    function handleChange(e){
+        // setState 로 값을 변경 -> input 요소에 변화가 보임
+        // input 요소 : name, value 속성값 한쌍으로 저장 되어야 한다
+        setState({
+            ...state, // old state(현재 state 객체 값 복사)
+            [e.target.name]: e.target.value // 이벤트 발생시킨 input 요소만 업데이트
+        })
     }
 
-    function handleChecked() {
+    function handleChecked(e) {
         // setState 로 값을 변경
+        // 많은 체크 박스 중 하나를 클릭한 것에 대한 이벤트 핸들러
+        // 이벤트를 발생시킨 체크박스를 하나이고 그것에 대한 name, value, 체크여부를 저장
+        const {name, value, checked} = e.target
+        // 체크박스 name : 두개중 하나, days, sessions 배열 현재상태값 가져오기
+        const values = new Set(state[name])
+        // 클릭한 체크박스의 value 문자열을 정수로 변환하여 저장
+        const intValue = parseInt(value, 10)
+
+        // 일단 해당 intValue 를 values 배열에서 삭제하기
+        values.delete(intValue)
+        // 체크 상태 다시 확인하여 values 배열에 추가
+        if(checked) values.add(intValue)
+
+        //
+        setState({
+            ...state,
+            [name]: [...values] // days 또는 session 배열을 수정
+        })
     }
 
+    // 입력할 때 바뀌는 것을 관찰
     console.log("BookableForm state---", state)
 
 
