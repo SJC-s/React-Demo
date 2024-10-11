@@ -2,6 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import Spinner from "../UI/Spinner.jsx";
 import UserContext from "./UserContext.js";
 import useFetch from "../utils/useFetch.js";
+import {useQuery} from "react-query";
+import loadData from "../utils/api.js";
 
 export default function UserPicker(){
     // const [user, setUser] = useState(null)
@@ -9,11 +11,15 @@ export default function UserPicker(){
     // user 상태값을 가져오기 위해 useContext hook 사용 해야함
     const {user, setUser} = useContext(UserContext)
 //  "http://localhost:3002/users",  setUser(data[0])
-    const {data:users=[], status, error} = useFetch("http://localhost:3002/users")
+    const {data:users=[], status, error} = useQuery(
+        "users",
+        () => loadData("http://localhost:3002/users")
+    );
+    console.log("status", status)
 
     useEffect(() => {
         setUser(users[0])
-    }, [users, setUser]);
+    }, []);
 
     if(status === "loading") {
         return <Spinner/>
