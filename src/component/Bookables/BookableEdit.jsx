@@ -26,6 +26,47 @@ export default function BookableEdit() {
         // fetch 문제 : "bookables" 이름의 캐쉬값을 가져와서 id 와 같은 것으로 data 에 저장
     )
 
+    /* -- 수업
+    // 삭제 처리 커스텀 훅
+function useDeleteBookable () {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        bookable => deleteItem(`http://localhost:3002/bookables/${bookable.id}`),
+        {
+            // onSuccess : 첫번째 인자는 서버에서 보낸 응답. 두번째 인자는 실행함수로 보낸 데이터
+            onSuccess: (response, bookable) => {
+                // 현재 cache 에서 key 이름 "bookables" 가져오기
+                // 낙관적 업데이트 : DELETE 요청을 성공했으니 캐쉬를 바로 업데이트
+                const bookables = queryClient.getQueryData("bookables") || [];
+                console.log("useDeleteBookable bookable",bookable)
+                // 삭제한 bookable 만 제외 filter 하여 bookables 업데이트
+                queryClient.setQueryData(
+                    "bookables",
+                    bookables.filter(b => b.id !== bookable.id)
+                );
+                // 삭제된 bookable 그룹의 첫번쨰 항목으로 url 바꾸기
+                navigate(`/bookables/${getIdForFirstInGroup(bookables, bookable) || ""}`);
+            }
+        }
+    );
+    // 리턴 받은 mutation 객체 중 필요한 값만 모아서 객체 생성하여 리턴
+    return {
+        deleteBookable: mutation.mutate,
+        status:mutation.status,
+        isDeleteError: mutation.isError,
+        deleteError: mutation.error
+    };
+}
+function getIdForFirstInGroup (bookables, excludedBookable) {
+    // 삭제된 excludedBookable 의 id, group 저장
+    const {id, group} = excludedBookable;
+    // bookables 에서 삭제된 group 과 같은 첫번째 id 찾기
+    const bookableInGroup = bookables.find(b => b.group === group && b.id !== id);
+    // id 리턴
+    return bookableInGroup?.id;
+}
+    * */
 
     const {mutate:deleteBookable} = useMutation(
         /* deleteBookable 이 실행할 인자값과 실행할 비동기 함수 */

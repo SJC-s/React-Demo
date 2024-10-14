@@ -9,10 +9,10 @@ import {useState} from "react";
 import UserContext from "./component/Users/UserContext.js";
 import {QueryClient, QueryClientProvider} from "react-query";
 
+const queryClient = new QueryClient();
 function App() {
   const [user, setUser] = useState();
   console.log('-App user -', user)
-  const queryClient = new QueryClient();
 
   return (
       <QueryClientProvider client={queryClient}>
