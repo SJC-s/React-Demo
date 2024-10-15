@@ -16,7 +16,7 @@ function UserList() {
     );
 
     useEffect(() => {
-        setUser(users[0])
+        if(!user) setUser(users[0])
     }, [users, setUser]);
 
     // 상태값 변수
