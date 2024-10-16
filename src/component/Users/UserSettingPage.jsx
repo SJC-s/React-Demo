@@ -13,6 +13,7 @@ export default function UserSettingPage() {
     const [profileImage, setProfileImage] = useState("")
     const [selectedFile, setSelectedFile] = useState(null)
     const [message, setMessage] = useState(null)
+    const {title="", name="", notes=""} = state
 
     useEffect(() => {
         if(user && user.img) {
@@ -107,7 +108,7 @@ export default function UserSettingPage() {
                     <input
                         type="text"
                         name="name"
-                        value={state?.name}
+                        value={name}
                         onChange={handleChange}
                     />
                 </p>
@@ -117,7 +118,7 @@ export default function UserSettingPage() {
                     <input
                         type="text"
                         name="title"
-                        value={state?.title}
+                        value={title}
                         onChange={handleChange}
                     />
                 </p>
@@ -127,7 +128,7 @@ export default function UserSettingPage() {
                           name="notes"
                           rows={6}
                           cols={30}
-                          value={state?.notes}
+                          value={notes}
                           onChange={handleChange}
                       />
                 </p>
