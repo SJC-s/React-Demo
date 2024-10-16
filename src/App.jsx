@@ -1,6 +1,6 @@
 import './App.css'
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
-import {FaCalendarAlt, FaDoorOpen, FaUsers} from "react-icons/fa";
+import {FaCalendarAlt, FaDoorOpen, FaUserCog, FaUsers} from "react-icons/fa";
 import UserPicker from "./component/Users/UserPicker.jsx";
 import BookingsPage from "./component/Bookings/BookingsPage.jsx";
 import BookablesPage from "./component/Bookables/BookablesPage.jsx";
@@ -8,6 +8,7 @@ import UsersPage from "./component/Users/UsersPage.jsx";
 import {useState} from "react";
 import UserContext from "./component/Users/UserContext.js";
 import {QueryClient, QueryClientProvider} from "react-query";
+import UserSettingPage from "./component/Users/UserSettingPage.jsx";
 
 const queryClient = new QueryClient();
 function App() {
@@ -42,7 +43,12 @@ function App() {
                 </li>
               </ul>
             </nav>
-            <UserPicker/>
+            <nav>
+              <UserPicker/>
+              <Link to="/settings" className="btn btn-header">
+                <FaUserCog/>
+              </Link>
+            </nav>
           </header>
         </div>
         <Routes>
@@ -50,6 +56,7 @@ function App() {
           {/* url 경로를 확장하기 위하여 path 수정, BookablesPage 에서 세부적인 처리와 정의 */}
           <Route path="/bookables/*" element={<BookablesPage/>}/>
           <Route path="/users" element={<UsersPage/>}/>
+          <Route path="/settings" element={<UserSettingPage/>}/>
         </Routes>
       </BrowserRouter>
       </UserContext.Provider>

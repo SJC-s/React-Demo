@@ -19,7 +19,7 @@ export default function UserPicker(){
 
     useEffect(() => {
         setUser(users[0])
-    }, []);
+    }, [users]);
 
     if(status === "loading") {
         return <Spinner/>
